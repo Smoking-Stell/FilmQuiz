@@ -1,7 +1,8 @@
 import telebot
 import csv
 
-from Keyboards import keyboard_yesno, keyboard_delete
+from Keyboards import keyboard_yesno, keyboard_delete, keyboard_select_quiz
+from Game import game
 
 bot = telebot.TeleBot('5160953743:AAEiEMtJR-59wS7PuTD8N_AslzCsH452Veg')
 
@@ -45,7 +46,7 @@ def yesno_help_function(message):
         bot.send_message(message.from_user.id, "Тогда перепроверь и введи снова")
         bot.register_next_step_handler(message, check_nick)
     else:
-        bot.send_message(message.from_user.id, "Тогда создай пользователя")
+        bot.send_message(message.from_user.id, "Тогда создай пользователя", reply_markup=keyboard_delete)
         bot.register_next_step_handler(message, get_nick)
 
 
@@ -72,29 +73,30 @@ def get_nick(message):
     bot.register_next_step_handler(message, get_age)
 
 
+def generations_answer(mess, t):
+    return (bot.send_message(mess.from_user.id,
+                             "Категорически приветствую, " + t + ", а теперь выбирай игру:",
+                             reply_markup=keyboard_select_quiz))
+
 @bot.message_handler(content_types=['text'])
 def get_age(message):
     age = -1
     try:
         age = int(message.text)
-    except Exception:
+    except ValueError:
         bot.send_message(message.from_user.id, 'Возраст - это число')
         bot.register_next_step_handler(message, get_age)
         return
 
     global user_name
     if age < 18:
-        bot.send_message(message.from_user.id, "Категорически приветствую, Школьник")
+        generations_answer(message, "Школьник")
     elif age > 40:
-        bot.send_message(message.from_user.id, "Категорически приветствую, Динозавр")
+        generations_answer(message, "Динозавр")
     else:
-        bot.send_message(message.from_user.id, "Категорически приветствую, " + user_name)
+        generations_answer(message, user_name)
+
     bot.register_next_step_handler(message, game)
-
-
-@bot.message_handler(content_types=['text'])
-def game(message):
-    bot.send_message(message.from_user.id, "Хуй")
 
 
 bot.polling(none_stop=True, interval=0)
