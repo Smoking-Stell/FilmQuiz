@@ -18,7 +18,7 @@ class Base:
         self.base_of_users = take_base()
         self.user_name = ""
         self.user_id = -1
-        self.que_points = 7
+        self.que_points = 5
         self.used_films = np.zeros(config.number_of_films)
         self.temp_film = 0
 
@@ -43,6 +43,7 @@ class Base:
 
     def change_user_name(self, new_user_name):
         self.user_name = new_user_name
+        self.user_id = self.check_in_base(self.user_name)
 
     def get_user_name(self):
         return self.user_name
@@ -50,8 +51,8 @@ class Base:
     def change_que_number(self):
         self.que_points -= 1
 
-    def get_steal_que_number(self):
-        return self.que_points
+    def still_in_game(self):
+        return self.que_points <= 0
 
     def get_unused_film(self):
         flag = False

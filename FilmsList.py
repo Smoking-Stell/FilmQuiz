@@ -28,7 +28,7 @@ def fun2(film_id):
 def fun3(film_id):
     cont = general(film_id + "/box_office")
     items = cont.get("items")
-    ans = "Бюджет$: " + str(items[0]["amount"]) + "    Сборы$: " + str(items[4]["amount"])
+    ans = "Бюджет($): " + str(items[0]["amount"]) + "    Сборы в мире($): " + str(items[len(items) - 1]["amount"])
     return ans
 
 
@@ -41,8 +41,10 @@ def fun4(film_id):
 
 
 def fun5(film_id):
-    cont = general(film_id)
-    ans = cont.get("nameEn")
+    cont = general(film_id + "/facts")
+    items = cont.get("items")
+    random_fact = random.randint(0, len(items) - 1)
+    ans = items[random_fact]["text"]
     return ans
 
 
@@ -56,9 +58,9 @@ class Film:
         self.right_answer = general(film_id).get("nameRu")
 
     def task(self):
-        num = 0
+        num = random.randint(0, self.number_of_questions - 1)
         while self.used[num] == 1:
-            num = random.randint(1, self.number_of_questions - 1)
+            num = random.randint(0, self.number_of_questions - 1)
         self.used[num] = 1
         ans = (self.functions[num])(self.film_id)
         if ans is None:

@@ -38,7 +38,6 @@ def yesno_help_function(message):
 
 @bot.message_handler(content_types=['text'])
 def check_nick(message):
-
     entered_nick = message.text
     founded_id = base.check_in_base(entered_nick)
     if founded_id != -1:
@@ -112,18 +111,18 @@ def not_first_film_game(message):
 
 @bot.message_handler(content_types=['text'])
 def one_round_film_game(message):
-    if base.get_steal_que_number() <= 0:
-        question = "Ты проиграл( Начать снова?"
-        bot.send_message(message.from_user.id, question, reply_markup=keyboard_yesno)
-        bot.register_next_step_handler(message, not_first_film_game)
 
-    base.change_que_number()
     if base.answer_is_right(message.text):
         base.update()
         question = "Правильно! Продолжаем?"
         bot.send_message(message.from_user.id, question, reply_markup=keyboard_yesno)
         bot.register_next_step_handler(message, not_first_film_game)
     else:
+        base.change_que_number()
+        if base.still_in_game():
+            question = "Ты проиграл( Начать снова?"
+            bot.send_message(message.from_user.id, question, reply_markup=keyboard_yesno)
+            bot.register_next_step_handler(message, not_first_film_game)
         question = base.new_task()
         bot.send_message(message.from_user.id, question)
         bot.register_next_step_handler(message, one_round_film_game)
