@@ -44,7 +44,7 @@ def get_sorted_base():
     base = take_base()
 
     for i in base:
-        diction[i[0]] = i[1]
+        diction[i[0]] = int(i[1])
     sorted_keys = sorted(diction, key=diction.get)
 
     for i in sorted_keys:

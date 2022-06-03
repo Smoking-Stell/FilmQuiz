@@ -120,6 +120,7 @@ def not_first_film_game(message):
     if message.text == "Да":
         if temp.get_unused_film() == -1:
             bot.send_message(message.from_user.id, "Ты прошел игру!")
+            bot.register_next_step_handler(message, start)
             return
 
         bot.send_message(message.from_user.id, "Поехали, помни, что некоторые подсказки нужно подождать",
@@ -143,7 +144,6 @@ def one_round_film_game(message):
         bot.send_message(message.from_user.id, question, reply_markup=keyboard_yesno)
         bot.register_next_step_handler(message, not_first_film_game)
     else:
-
         if not temp.full_questions():
             bot.send_message(message.from_user.id, "Мимо", reply_markup=keyboard_delete)
 
@@ -154,6 +154,7 @@ def one_round_film_game(message):
             bot.send_message(message.from_user.id, question, reply_markup=keyboard_yesno)
             bot.register_next_step_handler(message, not_first_film_game)
             return
+
         question = temp.new_task()
         if question[0] == if_foto:
             img = open(question[1], 'rb')

@@ -65,7 +65,11 @@ class Base:
         return self.temp_film.task()
 
     def get_results(self):
-        return UserBase.get_sorted_base()
+        dict = UserBase.get_sorted_base()
+        ans = ""
+        for i in dict:
+            ans += i + "  :  " + str(dict[i]) + "\n"
+        return ans
 
     def full_questions(self):
         return self.que_points == config.start_que_points
