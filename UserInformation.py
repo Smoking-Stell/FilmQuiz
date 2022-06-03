@@ -18,7 +18,7 @@ class Base:
         self.base_of_users = take_base()
         self.user_name = ""
         self.user_id = -1
-        self.que_points = 5
+        self.que_points = config.start_que_points
         self.used_films = np.zeros(config.number_of_films)
         self.temp_film = 0
 
@@ -30,16 +30,20 @@ class Base:
             for i in range(len(self.base_of_users)):
                 file_writer.writerow([self.base_of_users[i][0], self.base_of_users[i][1]])
 
-    def push_new_user(self, name):
-        self.user_name = str(name)
-        self.user_id = len(self.base_of_users)
-        self.base_of_users.append([self.user_name, "0"])
-
     def check_in_base(self, usr):
         for i in range(len(self.base_of_users)):
             if self.base_of_users[i][0] == usr:
                 return i
         return -1
+
+    def push_new_user(self, name):
+        t = self.check_in_base(name)
+        self.user_name = str(name)
+        if not t == -1:
+            self.user_id = t
+        else:
+            self.user_id = len(self.base_of_users)
+            self.base_of_users.append([self.user_name, "0"])
 
     def change_user_name(self, new_user_name):
         self.user_name = new_user_name
@@ -64,16 +68,28 @@ class Base:
         if not flag:
             return -1
 
-        self.que_points = 6
+        self.que_points = config.start_que_points
         t = random.randint(0, config.number_of_films - 1)
         while self.used_films[t] == 1:
             t = random.randint(0, config.number_of_films - 1)
         self.used_films[t] = 1
-        self.temp_film = Film(config.list_of_films_ids[t])
+        self.temp_film = Film(config.list_of_films_ids[t], str(self.user_id))
         return 1
 
     def answer_is_right(self, user_answer):
-        return user_answer.lower() == self.temp_film.get_right_answer()
+        return user_answer.lower().replace(' ', '') == self.temp_film.get_right_answer()
 
     def new_task(self):
         return self.temp_film.task()
+
+    def get_base(self):
+        diction = {}
+        sorted_diction = {}
+        for i in self.base_of_users:
+            diction[i[0]] = i[1]
+        sorted_keys = sorted(diction, key=diction.get)
+
+        for i in sorted_keys:
+            sorted_diction[i] = diction[i]
+
+        return sorted_diction

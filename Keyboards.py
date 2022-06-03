@@ -9,9 +9,10 @@ keyboard_yesno = ReplyKeyboardMarkup(resize_keyboard=True).row(button_yes, butto
 
 keyboard_delete = ReplyKeyboardRemove()
 
-button_film = KeyboardButton("Фильмы")
+button_film1 = KeyboardButton("Фильмы")
+button_film2 = KeyboardButton("Кинематограф")
 
-keyboard_select_quiz = ReplyKeyboardMarkup(resize_keyboard=True).row(button_film, button_film)
+keyboard_select_quiz = ReplyKeyboardMarkup(resize_keyboard=True).row(button_film1, button_film1)
 
 button_ok = KeyboardButton("Ok")
 

@@ -8,13 +8,14 @@ from Texts import *
 
 bot = telebot.TeleBot(config.token)
 
-temp_film = 0
-base = Base()
+base = {}
+
 
 @bot.message_handler(content_types=['text'])
 def start(message):
     global base
-    base = Base()
+    base[message.from_user.id] = Base()
+    temp = base[message.from_user.id]
 
     if message.text == '/reg':
         bot.send_message(message.from_user.id, "Придумай какой-нибудь ник для себя")
@@ -22,8 +23,14 @@ def start(message):
     elif message.text == '/sig':
         bot.send_message(message.from_user.id, "Введи свой ник")
         bot.register_next_step_handler(message, check_nick)
+    elif message.text == '/res':
+        diction = temp.get_base()
+        base[message.from_user.id] = temp
+        bot.send_message(message.from_user.id, diction)
     else:
-        bot.send_message(message.from_user.id, 'Напиши /reg , если новенький или /sig , если уже смешарик')
+        bot.send_message(message.from_user.id, 'Напиши /reg , если новенький'
+                                               ' /sig , если уже смешарик'
+                                               ' /res , если хочешь посмотреть общие результаты')
 
 
 @bot.message_handler(content_types=['text'])
@@ -38,13 +45,16 @@ def yesno_help_function(message):
 
 @bot.message_handler(content_types=['text'])
 def check_nick(message):
+    temp = base[message.from_user.id]
     entered_nick = message.text
-    founded_id = base.check_in_base(entered_nick)
+    founded_id = temp.check_in_base(entered_nick)
     if founded_id != -1:
-        base.change_user_name(entered_nick)
+        temp.change_user_name(entered_nick)
+        base[message.from_user.id] = temp
         question = "И снова здравствуйте,во что играем?"
         bot.send_message(message.from_user.id, question, reply_markup=keyboard_select_quiz)
-        bot.register_next_step_handler(message, first_game)
+
+        bot.register_next_step_handler(message, first_film_game)
     else:
         question = "Ты точно существуешь?"
         bot.send_message(message.from_user.id, question, reply_markup=keyboard_yesno)
@@ -53,7 +63,10 @@ def check_nick(message):
 
 @bot.message_handler(content_types=['text'])
 def get_nick(message):
-    base.push_new_user(message.text)
+    temp = base[message.from_user.id]
+    temp.push_new_user(message.text)
+    base[message.from_user.id] = temp
+
     bot.send_message(message.from_user.id, 'Введи возраст')
     bot.register_next_step_handler(message, get_age)
 
@@ -63,8 +76,10 @@ def generations_answer(mess, t):
                              "Категорически приветствую, " + t + ", а теперь выбирай игру:",
                              reply_markup=keyboard_select_quiz))
 
+
 @bot.message_handler(content_types=['text'])
 def get_age(message):
+    temp = base[message.from_user.id]
     try:
         age = int(message.text)
     except ValueError:
@@ -77,15 +92,18 @@ def get_age(message):
     elif age > 40:
         generations_answer(message, "Динозавр")
     else:
-        generations_answer(message, base.get_user_name())
+        generations_answer(message, temp.get_user_name())
 
-    bot.register_next_step_handler(message, first_game)
+    base[message.from_user.id] = temp
+    bot.register_next_step_handler(message, first_film_game)
+
 
 @bot.message_handler(content_types=['text'])
-def first_game(message):
+def first_film_game(message):
+    temp = base[message.from_user.id]
     if message.text == "Фильмы":
-        if base.get_unused_film() == -1:
-            bot.send_message(message.from_user.id, "Ты прошел игру!")
+        if temp.get_unused_film() == -1:
+            bot.send_message(message.from_user.id, "Что-то пошло не так!")
             return
 
         bot.send_message(message.from_user.id, film_intro,
@@ -93,17 +111,19 @@ def first_game(message):
         bot.register_next_step_handler(message, one_round_film_game)
     else:
         bot.send_message(message.from_user.id, "Ты как это сделал?")
-        bot.register_next_step_handler(message, first_game)
+        bot.register_next_step_handler(message, first_film_game)
 
 
 @bot.message_handler(content_types=['text'])
 def not_first_film_game(message):
+    temp = base[message.from_user.id]
     if message.text == "Да":
-        if base.get_unused_film() == -1:
+        if temp.get_unused_film() == -1:
             bot.send_message(message.from_user.id, "Ты прошел игру!")
             return
 
-        bot.send_message(message.from_user.id, "Поехали")
+        bot.send_message(message.from_user.id, "Поехали, помни, что некоторые подсказки нужно подождать",
+                         reply_markup=keyboard_ok)
         bot.register_next_step_handler(message, one_round_film_game)
     else:
         bot.send_message(message.from_user.id, "Пока")
@@ -111,22 +131,30 @@ def not_first_film_game(message):
 
 @bot.message_handler(content_types=['text'])
 def one_round_film_game(message):
+    temp = base[message.from_user.id]
+    if temp.answer_is_right(message.text):
+        temp.update()
+        base[message.from_user.id] = temp
 
-    if base.answer_is_right(message.text):
-        base.update()
         question = "Правильно! Продолжаем?"
         bot.send_message(message.from_user.id, question, reply_markup=keyboard_yesno)
         bot.register_next_step_handler(message, not_first_film_game)
     else:
-        base.change_que_number()
-        if base.still_in_game():
+        # bot.send_message(message.from_user.id, "Мимо", reply_markup=keyboard_delete)
+        temp.change_que_number()
+        base[message.from_user.id] = temp
+        if temp.still_in_game():
             question = "Ты проиграл( Начать снова?"
             bot.send_message(message.from_user.id, question, reply_markup=keyboard_yesno)
             bot.register_next_step_handler(message, not_first_film_game)
-        question = base.new_task()
-        bot.send_message(message.from_user.id, question)
+            return
+        question = temp.new_task()
+        if question[0] == if_foto:
+            img = open(question[1], 'rb')
+            bot.send_photo(message.from_user.id, img)
+        else:
+            bot.send_message(message.from_user.id, question[1])
         bot.register_next_step_handler(message, one_round_film_game)
-        return
 
 
 bot.polling(none_stop=True, interval=0)

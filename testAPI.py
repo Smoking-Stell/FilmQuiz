@@ -1,19 +1,36 @@
-import json
+import numpy as np
 import requests
 import random
+from config import api_token, url, if_foto
 
-api_token = "09de81f6-5e66-4883-be7c-be9b689bec90"
+def general(inf, field="id", segment="movie"):
+    pars = {'token': api_token,
+            'field': field,
+            'search': inf}
+    if field == "movieId":
+        pars["limit"] = 1000
+    print(pars)
+    res = requests.get(url + segment, params=pars)
+    if res.status_code == 200:
+        ans = res.json()
+    else:
+        raise ValueError
+    return ans
 
-headers = {'X-API-KEY': api_token,
-           'Content-Type': 'application/json'}
+def one_screen(film_id):
+    cont = general(film_id, "movieId", "image")
+    date = cont['docs']
+    print(date)
+    ans = []
+    for i in date:
+        if 'kp' in i['url'] or 'yandex' in i['url']:
+            ans.append(i['url'])
+    t = random.randint(0, len(ans))
+    print(t, ans)
+    img = requests.get(ans[t])
+    im = open('x.jpg', 'wb')
+    im.write(img.content)
+    im.close()
+    return if_foto
 
-film_id = "535341"
-url = 'https://kinopoiskapiunofficial.tech/api/v2.2/films/' + film_id
-
-res = requests.get(url + "/box_office", headers=headers)
-cont = json.loads(res.content)
-
-items = cont.get("items")
-#ans = "Бюджет$: " + str(items[0]["amount"]) + "    Сборы$: " + str(items[4]["amount"])
-
-print(items)
+one_screen("430")
