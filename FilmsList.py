@@ -12,6 +12,14 @@ def write_img(img, img_name):
     im = open(img_name, 'wb')
     im.write(img)
     im.close()
+    im = imread('./' + img_name)
+    return im
+
+def smart_text(str1, str2):
+    for i in str2.split():
+        if len(i) >= 3:
+            str1 = str1.replace(i, '*')
+    return str1
 
 def bed_poster(img, out_img_name):
     def randpix(n):
@@ -49,9 +57,8 @@ def bed_poster(img, out_img_name):
         time = np.array([[randpix(time[i][j]) for j in range(time.shape[1])] for i in range(time.shape[0])])
         return time
 
-    write_img(img.content, out_img_name)
+    im = write_img(img.content, out_img_name)
 
-    im = imread('./' + out_img_name)
     r = im[:, :, 0].copy()
     g = im[:, :, 1].copy()
     b = im[:, :, 2].copy()
@@ -85,7 +92,7 @@ def slogan(*args):
 
 def descript(*args):
     cont = general(args[0])
-    return if_string, cont["description"]
+    return if_string, smart_text(cont["description"], cont["name"])
 
 
 def one_screen(*args):
@@ -98,9 +105,18 @@ def one_screen(*args):
 
     if not ans:
         return None
-    t = random.randint(0, len(ans))
+
+    t = random.randint(0, len(ans) - 1)
     img = requests.get(ans[t])
-    write_img(img.content, args[1])
+    im = write_img(img.content, args[1])
+
+    while (ans[t] == -1) or all([i[0] == 238 and i[1] == 238 and i[2] == 238
+                                  for i in (im[0][0], im[0][-1], im[-1][0], im[-1][-1])]):
+        ans[t] = -1
+        t = random.randint(0, len(ans) - 1)
+        img = requests.get(ans[t])
+        im = write_img(img.content, args[1])
+
     return if_foto, args[1]
 
 
@@ -115,7 +131,7 @@ def fact(*args):
     while '&' in s:
         j = s.find('&')
         s = s[:j] + ' ' + s[j + 6:]
-    return if_string, s
+    return if_string, smart_text(s, cont["name"])
 
 
 def poster(*args):
@@ -157,8 +173,10 @@ class Film:
             num = random.randint(0, m)
         self.used[num] = 1
         ans = (self.functions[num])(self.film_id, self.film_user_name + '.jpg')
+
         if ans[1] is None:
             return self.task()
+
         return ans
 
     def get_right_answer(self):

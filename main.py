@@ -24,7 +24,7 @@ def start(message):
         bot.send_message(message.from_user.id, "Введи свой ник")
         bot.register_next_step_handler(message, check_nick)
     elif message.text == '/res':
-        diction = temp.get_base()
+        diction = temp.get_results()
         base[message.from_user.id] = temp
         bot.send_message(message.from_user.id, diction)
     else:
@@ -47,9 +47,9 @@ def yesno_help_function(message):
 def check_nick(message):
     temp = base[message.from_user.id]
     entered_nick = message.text
-    founded_id = temp.check_in_base(entered_nick)
+    founded_id = temp.existion(entered_nick)
     if founded_id != -1:
-        temp.change_user_name(entered_nick)
+        temp.set_user_id(entered_nick)
         base[message.from_user.id] = temp
         question = "И снова здравствуйте,во что играем?"
         bot.send_message(message.from_user.id, question, reply_markup=keyboard_select_quiz)
@@ -132,6 +132,9 @@ def not_first_film_game(message):
 @bot.message_handler(content_types=['text'])
 def one_round_film_game(message):
     temp = base[message.from_user.id]
+    if temp.answer_is_right(message.text) == config.please_stop:
+        bot.send_message(message.from_user.id, temp.answer_is_right(message.text), reply_markup=keyboard_delete)
+
     if temp.answer_is_right(message.text):
         temp.update()
         base[message.from_user.id] = temp
@@ -140,7 +143,10 @@ def one_round_film_game(message):
         bot.send_message(message.from_user.id, question, reply_markup=keyboard_yesno)
         bot.register_next_step_handler(message, not_first_film_game)
     else:
-        # bot.send_message(message.from_user.id, "Мимо", reply_markup=keyboard_delete)
+
+        if not temp.full_questions():
+            bot.send_message(message.from_user.id, "Мимо", reply_markup=keyboard_delete)
+
         temp.change_que_number()
         base[message.from_user.id] = temp
         if temp.still_in_game():

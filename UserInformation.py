@@ -1,21 +1,11 @@
-import csv
 import config
 
 from FilmsList import *
-
-
-def take_base():
-    base_of_users = []
-    with open("./base.csv", encoding='utf-8') as r_file:
-        file_reader = csv.reader(r_file, delimiter=",")
-        for row in file_reader:
-            base_of_users.append(row)
-    return base_of_users
+import UserBase
 
 
 class Base:
     def __init__(self):
-        self.base_of_users = take_base()
         self.user_name = ""
         self.user_id = -1
         self.que_points = config.start_que_points
@@ -23,31 +13,22 @@ class Base:
         self.temp_film = 0
 
     def update(self):
-        t = int(self.base_of_users[self.user_id][1]) + self.que_points
-        self.base_of_users[self.user_id][1] = str(t)
-        with open("./base.csv", mode='w', encoding='utf-8') as w_file:
-            file_writer = csv.writer(w_file, delimiter=",", lineterminator="\n")
-            for i in range(len(self.base_of_users)):
-                file_writer.writerow([self.base_of_users[i][0], self.base_of_users[i][1]])
-
-    def check_in_base(self, usr):
-        for i in range(len(self.base_of_users)):
-            if self.base_of_users[i][0] == usr:
-                return i
-        return -1
+        UserBase.update_base(self.user_id, self.que_points)
 
     def push_new_user(self, name):
-        t = self.check_in_base(name)
+        t = UserBase.check_in_base(name)
         self.user_name = str(name)
         if not t == -1:
             self.user_id = t
         else:
-            self.user_id = len(self.base_of_users)
-            self.base_of_users.append([self.user_name, "0"])
+            self.user_id = UserBase.push(self.user_name)
 
-    def change_user_name(self, new_user_name):
+    def set_user_id(self, new_user_name):
         self.user_name = new_user_name
-        self.user_id = self.check_in_base(self.user_name)
+        self.user_id = UserBase.check_in_base(self.user_name)
+
+    def existion(self, checked_nick):
+        return UserBase.check_in_base(checked_nick)
 
     def get_user_name(self):
         return self.user_name
@@ -64,7 +45,6 @@ class Base:
             if self.used_films[i] == 0:
                 flag = True
                 break
-
         if not flag:
             return -1
 
@@ -77,19 +57,15 @@ class Base:
         return 1
 
     def answer_is_right(self, user_answer):
+        if self.temp_film == 0:
+            return config.please_stop
         return user_answer.lower().replace(' ', '') == self.temp_film.get_right_answer()
 
     def new_task(self):
         return self.temp_film.task()
 
-    def get_base(self):
-        diction = {}
-        sorted_diction = {}
-        for i in self.base_of_users:
-            diction[i[0]] = i[1]
-        sorted_keys = sorted(diction, key=diction.get)
+    def get_results(self):
+        return UserBase.get_sorted_base()
 
-        for i in sorted_keys:
-            sorted_diction[i] = diction[i]
-
-        return sorted_diction
+    def full_questions(self):
+        return self.que_points == config.start_que_points
