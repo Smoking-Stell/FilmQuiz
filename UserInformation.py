@@ -61,6 +61,9 @@ class Base:
             return config.please_stop
         return user_answer.lower().replace(' ', '') == self.temp_film.get_right_answer()
 
+    def final_answer(self):
+        return self.temp_film.get_right_answer()
+
     def new_task(self):
         return self.temp_film.task()
 
