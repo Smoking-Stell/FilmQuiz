@@ -9,20 +9,50 @@ from config import url, api_token, if_foto, in_img_case, if_string
 
 
 def write_img(img, img_name):
+    """
+    It's a function for save image with name (image_name).
+
+    :param img: image file.
+    :param img_name: name of image file (str).
+    :return: image like skimage.
+    """
     im = open(img_name, 'wb')
     im.write(img)
     im.close()
     im = imread('./' + img_name)
     return im
 
+
 def smart_text(str1, str2):
+    """
+    It's a function for replace keywords from name of film to *(n).
+
+    :param str1: main string (str).
+    :param str2: string with keywords (str).
+    :return: new string with *(n) (str).
+    """
     for i in str2.split():
         if len(i) >= 3:
             str1 = str1.replace(i, '*')
     return str1
 
+
 def bed_poster(img, out_img_name):
+    """
+    This's a function that makes the original plot very poor quality.
+
+    :param img: image poster.
+    :param out_img_name: name for bad poster (str).
+    :return: None.
+    """
+
     def randpix(n):
+        """
+        It return random color pixel. 50% for save original color. For 1 canal.
+
+        :param n: color (int).
+        :return: color (int).
+        """
         r = random.randint(1, 4)
         if r == 4:
             n = 255
@@ -31,6 +61,13 @@ def bed_poster(img, out_img_name):
         return n
 
     def Summer(ex, n):
+        """
+        It's for blur image by mask with length n.
+
+        :param ex: image.
+        :param n: length for mask (int).
+        :return: blur image.
+        """
         temp = np.zeros((ex.shape[0], ex.shape[1]))
         temp[0][0] = ex[0][0]
         for j in range(1, ex.shape[1]):
@@ -57,7 +94,11 @@ def bed_poster(img, out_img_name):
         time = np.array([[randpix(time[i][j]) for j in range(time.shape[1])] for i in range(time.shape[0])])
         return time
 
-    im = write_img(img.content, out_img_name)
+    im = img.content
+    im = write_img(im, out_img_name)
+    im = resize(im, (im.shape[0] // 2, im.shape[1] // 2, 3), anti_aliasing=True)
+    imsave(out_img_name, im)
+    im = imread('./' + out_img_name)
 
     r = im[:, :, 0].copy()
     g = im[:, :, 1].copy()
@@ -69,6 +110,15 @@ def bed_poster(img, out_img_name):
 
 
 def general(inf, field="id", segment="movie"):
+    """
+    It's for request on Kinopoisk.
+
+    :param inf: identification of what we search.
+    :param field: place where we search.
+    :param segment: movie or image.
+    :return: json information about film or picture.
+    """
+
     pars = {'token': api_token,
             'field': field,
             'search': inf}
@@ -83,19 +133,41 @@ def general(inf, field="id", segment="movie"):
     return ans
 
 
-#args: [film_id, img_name]
+# args: [film_id, img_name]
 
 def slogan(*args):
+    """
+    It's for find slogan of film.
+
+    :param args: film id (string).
+    :return: string identification and slogan of movie (str).
+    """
+
     cont = general(args[0])
     return if_string, cont["slogan"]
 
 
 def descript(*args):
+    """
+    It's for find description of film.
+
+    :param args: film id (string).
+    :return: string identification and description of movie (str).
+    """
+
     cont = general(args[0])
     return if_string, smart_text(cont["description"], cont["name"])
 
 
 def one_screen(*args):
+    """
+    It's for find random frame of film.
+
+    :param args: film id (str) and name for image
+    :return: image identification and random frame of film (image) and name of
+    or None if we haven't any images for movie.
+    """
+
     cont = general(args[0], in_img_case, "image")
     date = cont['docs']
     ans = []
@@ -111,7 +183,7 @@ def one_screen(*args):
     im = write_img(img.content, args[1])
 
     while (ans[t] == -1) or all([i[0] == 238 and i[1] == 238 and i[2] == 238
-                                  for i in (im[0][0], im[0][-1], im[-1][0], im[-1][-1])]):
+                                 for i in (im[0][0], im[0][-1], im[-1][0], im[-1][-1])]):
         ans[t] = -1
         t = random.randint(0, len(ans) - 1)
         img = requests.get(ans[t])
@@ -121,6 +193,13 @@ def one_screen(*args):
 
 
 def fact(*args):
+    """
+    This function return random fact about film.
+
+    :param args: id (int).
+    :return: random fact about film like 'smart_text' (str).
+    """
+
     cont = general(args[0])
     items = cont["facts"]
     random_fact = random.randint(0, len(items) - 1)
@@ -135,14 +214,29 @@ def fact(*args):
 
 
 def poster(*args):
+    """
+    It's for find poster.
+
+    :param args: id (int).
+    :return: image.
+    """
+
     cont = general(args[0])
     img = requests.get(cont["poster"]["url"])
+
     img_name = args[1]
     bed_poster(img, img_name)
     return if_foto, img_name
 
 
 def stars(*args):
+    """
+    It changes words or half of the word to stars.
+
+    :param args: id (int).
+    :return: name with stars (str).
+    """
+
     cont = general(args[0])
     s = cont['name']
 
@@ -160,6 +254,12 @@ def stars(*args):
 class Film:
 
     def __init__(self, film_id, film_user_name):
+        """
+        Constructor.
+
+        :param film_id: id of kinopoisk (int).
+        :param film_user_name: user name (str).
+        """
         self.used = np.zeros((40))
         self.functions = [slogan, descript, one_screen, fact, poster, stars]
         self.film_id = film_id
@@ -180,4 +280,9 @@ class Film:
         return ans
 
     def get_right_answer(self):
-        return self.right_answer.lower().replace(' ', '')
+        """
+        Get right ans.
+
+        :return: right answer.
+        """
+        return self.right_answer

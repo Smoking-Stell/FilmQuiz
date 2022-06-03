@@ -150,7 +150,7 @@ def one_round_film_game(message):
         temp.change_que_number()
         base[message.from_user.id] = temp
         if temp.still_in_game():
-            question = "Ты проиграл( Начать снова?" + temp.final_answer()
+            question = "Ты проиграл( \n Ответ:  " + temp.final_answer() + "\nНачать снова?"
             bot.send_message(message.from_user.id, question, reply_markup=keyboard_yesno)
             bot.register_next_step_handler(message, not_first_film_game)
             return
