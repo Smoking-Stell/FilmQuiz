@@ -96,7 +96,7 @@ def get_nick(message):
     temp.push_new_user(message.text)
     base[message.from_user.id] = temp
 
-    bot.send_message(message.from_user.id, 'Введи возраст')
+    bot.send_message(message.from_user.id, 'Введи возраст', reply_markup=keyboard_delete)
     bot.register_next_step_handler(message, get_age)
 
 
@@ -128,7 +128,7 @@ def get_age(message):
     try:
         age = int(message.text)
     except ValueError:
-        bot.send_message(message.from_user.id, 'Возраст - это число')
+        bot.send_message(message.from_user.id, 'Возраст - это число', reply_markup=keyboard_delete)
         bot.register_next_step_handler(message, get_age)
         return
 
