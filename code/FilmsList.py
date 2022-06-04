@@ -208,6 +208,8 @@ def fact(*args):
 
     cont = general(args[0])
     items = cont["facts"]
+    if items is None:
+        return if_string, None
     random_fact = random.randint(0, len(items) - 1)
     s = items[random_fact]["value"]
     while '<' in s and '>' in s:

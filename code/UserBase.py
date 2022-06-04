@@ -15,7 +15,7 @@ def take_base():
     """
 
     base_of_users = []
-    with open("base.csv", encoding='utf-8') as r_file:
+    with open("./base.csv", encoding='utf-8') as r_file:
         file_reader = csv.reader(r_file, delimiter=",")
         for row in file_reader:
             base_of_users.append(row)
@@ -31,7 +31,7 @@ def rewrite_base(base):
     :return:
     """
 
-    with open("base.csv", mode='w', encoding='utf-8') as w_file:
+    with open("./base.csv", mode='w', encoding='utf-8') as w_file:
         file_writer = csv.writer(w_file, delimiter=",", lineterminator="\n")
         for i in range(len(base)):
             file_writer.writerow([base[i][0], base[i][1]])
