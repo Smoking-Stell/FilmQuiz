@@ -1,0 +1,263 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>UserInformation module &#8212; PostModernQuizBot 1.7.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-UserInformation">
+<span id="userinformation-module"></span><h1>UserInformation module<a class="headerlink" href="#module-UserInformation" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="UserInformation.User">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">UserInformation.</span></span><span class="sig-name descname"><span class="pre">User</span></span><a class="reference internal" href="../_modules/UserInformation.html#User"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#UserInformation.User" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class contains information about user</p>
+<p>uses UserBase and FilmList</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="UserInformation.User.answer_is_right">
+<span class="sig-name descname"><span class="pre">answer_is_right</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_answer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/UserInformation.html#User.answer_is_right"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#UserInformation.User.answer_is_right" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check user answer for correctness
+Allows user make one mistake and and don’t look on register</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>user_answer</strong> – answer of user for current film</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>boolean answer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserInformation.User.change_que_number">
+<span class="sig-name descname"><span class="pre">change_que_number</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/UserInformation.html#User.change_que_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#UserInformation.User.change_que_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reduce points of user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserInformation.User.existion">
+<span class="sig-name descname"><span class="pre">existion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checked_nick</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/UserInformation.html#User.existion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#UserInformation.User.existion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if this user is in base</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>checked_nick</strong> – nick of user</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>number in base</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserInformation.User.final_answer">
+<span class="sig-name descname"><span class="pre">final_answer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/UserInformation.html#User.final_answer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#UserInformation.User.final_answer" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>right answer about current film</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserInformation.User.full_questions">
+<span class="sig-name descname"><span class="pre">full_questions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/UserInformation.html#User.full_questions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#UserInformation.User.full_questions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if we lost some questions or no</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>boolean value</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserInformation.User.get_results">
+<span class="sig-name descname"><span class="pre">get_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/UserInformation.html#User.get_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#UserInformation.User.get_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes base and out it</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>string table with results for now in sorted ordinary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserInformation.User.get_unused_film">
+<span class="sig-name descname"><span class="pre">get_unused_film</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/UserInformation.html#User.get_unused_film"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#UserInformation.User.get_unused_film" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find new film and puts it in temp_film</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>1 if we can find it
+-1 if we can’t</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserInformation.User.get_user_name">
+<span class="sig-name descname"><span class="pre">get_user_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/UserInformation.html#User.get_user_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#UserInformation.User.get_user_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>user name</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserInformation.User.new_task">
+<span class="sig-name descname"><span class="pre">new_task</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/UserInformation.html#User.new_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#UserInformation.User.new_task" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gives new task about film for this user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>task (cortege: identification, value)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserInformation.User.push_new_user">
+<span class="sig-name descname"><span class="pre">push_new_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/UserInformation.html#User.push_new_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#UserInformation.User.push_new_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Puts user in base or find it’s there</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – name of user</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserInformation.User.set_user_id">
+<span class="sig-name descname"><span class="pre">set_user_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_user_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/UserInformation.html#User.set_user_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#UserInformation.User.set_user_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces user name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_user_name</strong> – new user name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserInformation.User.still_in_game">
+<span class="sig-name descname"><span class="pre">still_in_game</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/UserInformation.html#User.still_in_game"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#UserInformation.User.still_in_game" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>if user still can gain some point or no</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="UserInformation.User.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/UserInformation.html#User.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#UserInformation.User.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Puts new points in base</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">PostModernQuizBot</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Akulov.A, Lebedev.E.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/docs/UserInformation.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

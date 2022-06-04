@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>UserBase module &#8212; PostModernQuizBot 1.7.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-UserBase">
+<span id="userbase-module"></span><h1>UserBase module<a class="headerlink" href="#module-UserBase" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="UserBase.check_in_base">
+<span class="sig-prename descclassname"><span class="pre">UserBase.</span></span><span class="sig-name descname"><span class="pre">check_in_base</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">usr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/UserBase.html#check_in_base"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#UserBase.check_in_base" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check existing of user in base</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>usr</strong> – user name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>-1 or number of user in table</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="UserBase.get_sorted_base">
+<span class="sig-prename descclassname"><span class="pre">UserBase.</span></span><span class="sig-name descname"><span class="pre">get_sorted_base</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/UserBase.html#get_sorted_base"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#UserBase.get_sorted_base" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gives sorted dictionary of users</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>diction in increase order</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="UserBase.push">
+<span class="sig-prename descclassname"><span class="pre">UserBase.</span></span><span class="sig-name descname"><span class="pre">push</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">usr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/UserBase.html#push"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#UserBase.push" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add new user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>usr</strong> – user name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>id of the user</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="UserBase.rewrite_base">
+<span class="sig-prename descclassname"><span class="pre">UserBase.</span></span><span class="sig-name descname"><span class="pre">rewrite_base</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/UserBase.html#rewrite_base"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#UserBase.rewrite_base" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write in csv new information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>base</strong> – information</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="UserBase.take_base">
+<span class="sig-prename descclassname"><span class="pre">UserBase.</span></span><span class="sig-name descname"><span class="pre">take_base</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/UserBase.html#take_base"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#UserBase.take_base" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts base from csv to array</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>array of data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="UserBase.update_base">
+<span class="sig-prename descclassname"><span class="pre">UserBase.</span></span><span class="sig-name descname"><span class="pre">update_base</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/UserBase.html#update_base"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#UserBase.update_base" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update base with new points for the user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_id</strong> – user id</p></li>
+<li><p><strong>points</strong> – points of user</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">PostModernQuizBot</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Akulov.A, Lebedev.E.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/docs/UserBase.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
