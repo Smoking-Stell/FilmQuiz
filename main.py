@@ -22,7 +22,7 @@ def start(message):
     """
 
     global base
-    base[message.from_user.id] = Base()
+    base[message.from_user.id] = User()
     temp = base[message.from_user.id]
 
     if message.text == '/reg':
@@ -206,7 +206,8 @@ def one_round_film_game(message):
 
     temp = base[message.from_user.id]
     if temp.answer_is_right(message.text) == config.please_stop:
-        bot.send_message(message.from_user.id, temp.answer_is_right(message.text), reply_markup=keyboard_delete)
+        bot.send_message(message.from_user.id, config.please_stop, reply_markup=keyboard_delete)
+        return
 
     if temp.answer_is_right(message.text):
         temp.update()

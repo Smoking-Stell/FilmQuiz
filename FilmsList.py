@@ -226,6 +226,7 @@ def intro(*args):
 
     :param args: id (int).
     :return: string identification and information about film(str)
+            None if we can't reach some information
     """
 
     cont = general(args[0])
@@ -291,23 +292,29 @@ def one_screen(*args):
 
 class Film:
 
+    """
+    Class contains some information about film
+    Uses config and some functions from FilmList
+
+    """
+
     def __init__(self, film_id, film_user_name):
 
         """
         Constructor.
-        used: shows was this function used or not
-        functions: list of tasks
+        __used: shows was this function used or not
+        __functions: list of tasks
         right_answer: shows right name of film on russian
 
         :param film_id: id of kinopoisk (int).
         :param film_user_name: some unique information for user, who used this film (str).
         """
 
-        self.functions = [slogan, descript, one_screen, fact, poster, stars, intro]
-        self.used = np.zeros((len(self.functions) + 2))
-        self.film_id = film_id
-        self.film_user_name = film_user_name
-        self.right_answer = general(film_id)["name"]
+        self.__functions = [slogan, descript, one_screen, fact, poster, stars, intro]
+        self.__used = np.zeros((len(self.__functions) + 2))
+        self.__film_id = film_id
+        self.__film_user_name = film_user_name
+        self.__right_answer = general(film_id)["name"]
 
     def task(self):
 
@@ -317,12 +324,12 @@ class Film:
         :return: identification, information
         """
 
-        m = len(self.functions) - 1
+        m = len(self.__functions) - 1
         num = random.randint(0, m)
-        while self.used[num] == 1:
+        while self.__used[num] == 1:
             num = random.randint(0, m)
-        self.used[num] = 1
-        ans = (self.functions[num])(self.film_id, self.film_user_name + '.jpg')
+        self.__used[num] = 1
+        ans = (self.__functions[num])(self.__film_id, self.__film_user_name + '.jpg')
 
         if ans[1] is None:
             return self.task()
@@ -337,4 +344,4 @@ class Film:
         :return: right answer. (str)
         """
 
-        return self.right_answer
+        return self.__right_answer
