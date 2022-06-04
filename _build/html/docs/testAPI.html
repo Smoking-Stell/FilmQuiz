@@ -33,10 +33,207 @@
             
   <section id="module-testAPI">
 <span id="testapi-module"></span><h1>testAPI module<a class="headerlink" href="#module-testAPI" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="testAPI.Film">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">testAPI.</span></span><span class="sig-name descname"><span class="pre">Film</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">film_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">film_user_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/testAPI.html#Film"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#testAPI.Film" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class contains some information about film
+Uses config and some functions from FilmList</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="testAPI.Film.get_right_answer">
+<span class="sig-name descname"><span class="pre">get_right_answer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/testAPI.html#Film.get_right_answer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#testAPI.Film.get_right_answer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get right name of film.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>right answer. (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="testAPI.Film.task">
+<span class="sig-name descname"><span class="pre">task</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/testAPI.html#Film.task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#testAPI.Film.task" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function gives random task about film and identification for it</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>identification, information</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py function">
-<dt class="sig sig-object py" id="testAPI.More">
-<span class="sig-prename descclassname"><span class="pre">testAPI.</span></span><span class="sig-name descname"><span class="pre">More</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/testAPI.html#More"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#testAPI.More" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="testAPI.bed_poster">
+<span class="sig-prename descclassname"><span class="pre">testAPI.</span></span><span class="sig-name descname"><span class="pre">bed_poster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_img_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/testAPI.html#bed_poster"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#testAPI.bed_poster" title="Permalink to this definition">¶</a></dt>
+<dd><p>This’s a function that makes the original plot poor quality.
+Saves image in file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img</strong> – image poster.</p></li>
+<li><p><strong>out_img_name</strong> – place for bad image (str).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="testAPI.descript">
+<span class="sig-prename descclassname"><span class="pre">testAPI.</span></span><span class="sig-name descname"><span class="pre">descript</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/testAPI.html#descript"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#testAPI.descript" title="Permalink to this definition">¶</a></dt>
+<dd><p>It’s for find description of film.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>args</strong> – film id (string).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>string identification and description of movie (str).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="testAPI.fact">
+<span class="sig-prename descclassname"><span class="pre">testAPI.</span></span><span class="sig-name descname"><span class="pre">fact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/testAPI.html#fact"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#testAPI.fact" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get random fact about film and
+cleans fact from links and other unuseful trash.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>args</strong> – id (int).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>random fact about film like ‘smart_text’ (str).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="testAPI.general">
+<span class="sig-prename descclassname"><span class="pre">testAPI.</span></span><span class="sig-name descname"><span class="pre">general</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'id'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'movie'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/testAPI.html#general"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#testAPI.general" title="Permalink to this definition">¶</a></dt>
+<dd><p>It’s for request on Kinopoisk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inf</strong> – identification of what we search.</p></li>
+<li><p><strong>field</strong> – place where we search.</p></li>
+<li><p><strong>segment</strong> – movie or image.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>json information about film or picture.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="testAPI.intro">
+<span class="sig-prename descclassname"><span class="pre">testAPI.</span></span><span class="sig-name descname"><span class="pre">intro</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/testAPI.html#intro"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#testAPI.intro" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get some information about film and</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>args</strong> – id (int).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>string identification and information about film(str)
+None if we can’t reach some information</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="testAPI.one_screen">
+<span class="sig-prename descclassname"><span class="pre">testAPI.</span></span><span class="sig-name descname"><span class="pre">one_screen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/testAPI.html#one_screen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#testAPI.one_screen" title="Permalink to this definition">¶</a></dt>
+<dd><p>It’s for find random frame of film.
+Checks if frame exists (because some frames replaced with special image)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>args</strong> – film id (str) and name for image</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>image identification and random frame of film (image)</p>
+</dd>
+</dl>
+<p>or None if we haven’t any images for movie.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="testAPI.poster">
+<span class="sig-prename descclassname"><span class="pre">testAPI.</span></span><span class="sig-name descname"><span class="pre">poster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/testAPI.html#poster"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#testAPI.poster" title="Permalink to this definition">¶</a></dt>
+<dd><p>It’s for find poster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>args</strong> – id (int).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>image identification and film poser in bad condition.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="testAPI.slogan">
+<span class="sig-prename descclassname"><span class="pre">testAPI.</span></span><span class="sig-name descname"><span class="pre">slogan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/testAPI.html#slogan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#testAPI.slogan" title="Permalink to this definition">¶</a></dt>
+<dd><p>It’s for find slogan of film.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>args</strong> – film id (string).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>string identification and slogan of movie (str).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="testAPI.smart_text">
+<span class="sig-prename descclassname"><span class="pre">testAPI.</span></span><span class="sig-name descname"><span class="pre">smart_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">str1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">str2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/testAPI.html#smart_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#testAPI.smart_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>It’s a function for replace keywords from name of film to <a href="#id1"><span class="problematic" id="id2">*</span></a>(n).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>str1</strong> – main string (str).</p></li>
+<li><p><strong>str2</strong> – string with keywords (str).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new string with <a href="#id3"><span class="problematic" id="id4">*</span></a>(n) (str).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="testAPI.stars">
+<span class="sig-prename descclassname"><span class="pre">testAPI.</span></span><span class="sig-name descname"><span class="pre">stars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/testAPI.html#stars"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#testAPI.stars" title="Permalink to this definition">¶</a></dt>
+<dd><p>It changes words or half of the word to stars.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>args</strong> – id (int).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>string identification and film name with some parts replaced (str).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="testAPI.write_img">
+<span class="sig-prename descclassname"><span class="pre">testAPI.</span></span><span class="sig-name descname"><span class="pre">write_img</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/testAPI.html#write_img"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#testAPI.write_img" title="Permalink to this definition">¶</a></dt>
+<dd><p>It’s a function for save image with name (image_name).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img</strong> – image file.</p></li>
+<li><p><strong>img_name</strong> – name of image file (str).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>image like skimage.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 
@@ -57,6 +254,16 @@
 
 
 <h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="main.html">main module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UserBase.html">UserBase module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FilmsList.html">FilmsList module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Keyboards.html">Keyboards module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UserInformation.html">UserInformation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Texts.html">Texts module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">config module</a></li>
+</ul>
 
 <div class="relations">
 <h3>Related Topics</h3>

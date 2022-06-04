@@ -33,8 +33,138 @@
 
           <div class="body" role="main">
             
-  <section id="main-module">
-<h1>main module<a class="headerlink" href="#main-module" title="Permalink to this headline">¶</a></h1>
+  <section id="module-main">
+<span id="main-module"></span><h1>main module<a class="headerlink" href="#module-main" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="main.check_nick">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">check_nick</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/main.html#check_nick"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.check_nick" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check existing of user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>message</strong> – message from user</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>goes to the game when nick is correct</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.first_game">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">first_game</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/main.html#first_game"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.first_game" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates film for this user at first time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>message</strong> – message from user</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.generations_answer">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">generations_answer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mess</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/main.html#generations_answer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.generations_answer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates easter agg depends on the age of user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mess</strong> – message from user</p></li>
+<li><p><strong>t</strong> – user generation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>generated string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.get_age">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">get_age</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/main.html#get_age"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.get_age" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get age of user needed in joke purpose</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>message</strong> – message from user</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>starts game</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.get_nick">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">get_nick</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/main.html#get_nick"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.get_nick" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get nick from user and creates user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>message</strong> – message from user</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>goes to stage of getting age</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.not_first_film_game">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">not_first_film_game</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/main.html#not_first_film_game"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.not_first_film_game" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates film for this user not at first time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>message</strong> – message from user</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.one_round_film_game">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">one_round_film_game</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/main.html#one_round_film_game"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.one_round_film_game" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if user answer is right
+After that asks user about film and gets answer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>message</strong> – message from user</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>goes to the next round, next game or stop session</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.start">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/main.html#start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main function that targets to other and start creating of user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>message</strong> – message from user</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>goes to other functions of bot, may show table of results</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.yesno_help_function">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">yesno_help_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/main.html#yesno_help_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.yesno_help_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Asks user if he really exists</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>message</strong> – message from user (Да или нет)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>goes to another bot function if nick exists or no</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 

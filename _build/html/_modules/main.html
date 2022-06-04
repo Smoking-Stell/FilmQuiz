@@ -1,0 +1,346 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>main &#8212; PostModernQuizBot 1.7.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for main</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">telebot</span>
+
+<span class="kn">from</span> <span class="nn">Keyboards</span> <span class="kn">import</span> <span class="n">keyboard_yesno</span><span class="p">,</span> <span class="n">keyboard_delete</span><span class="p">,</span> <span class="n">keyboard_select_quiz</span><span class="p">,</span> <span class="n">keyboard_ok</span>
+<span class="kn">from</span> <span class="nn">UserInformation</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">Texts</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">bot</span> <span class="o">=</span> <span class="n">telebot</span><span class="o">.</span><span class="n">TeleBot</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">token</span><span class="p">)</span>
+
+<span class="n">base</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="start"><a class="viewcode-back" href="../docs/main.html#main.start">[docs]</a><span class="nd">@bot</span><span class="o">.</span><span class="n">message_handler</span><span class="p">(</span><span class="n">content_types</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Main function that targets to other and start creating of user</span>
+
+
+<span class="sd">    :param message: message from user</span>
+<span class="sd">    :return: goes to other functions of bot, may show table of results</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">global</span> <span class="n">base</span>
+    <span class="n">base</span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">User</span><span class="p">()</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">base</span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s1">&#39;/reg&#39;</span><span class="p">:</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;Придумай какой-нибудь ник для себя&quot;</span><span class="p">)</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">register_next_step_handler</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">get_nick</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">message</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s1">&#39;/sig&#39;</span><span class="p">:</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;Введи свой ник&quot;</span><span class="p">)</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">register_next_step_handler</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">check_nick</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">message</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s1">&#39;/res&#39;</span><span class="p">:</span>
+        <span class="n">diction</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">get_results</span><span class="p">()</span>
+        <span class="n">base</span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">diction</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s1">&#39;Напиши /reg , если новенький&#39;</span>
+                                               <span class="s1">&#39; /sig , если уже смешарик&#39;</span>
+                                               <span class="s1">&#39; /res , если хочешь посмотреть общие результаты&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="yesno_help_function"><a class="viewcode-back" href="../docs/main.html#main.yesno_help_function">[docs]</a><span class="nd">@bot</span><span class="o">.</span><span class="n">message_handler</span><span class="p">(</span><span class="n">content_types</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">yesno_help_function</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Asks user if he really exists</span>
+
+<span class="sd">    :param message: message from user (Да или нет)</span>
+<span class="sd">    :return: goes to another bot function if nick exists or no</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s1">&#39;Да&#39;</span><span class="p">:</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;Тогда перепроверь и введи снова&quot;</span><span class="p">)</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">register_next_step_handler</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">check_nick</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;Тогда создай пользователя&quot;</span><span class="p">,</span> <span class="n">reply_markup</span><span class="o">=</span><span class="n">keyboard_delete</span><span class="p">)</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">register_next_step_handler</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">get_nick</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_nick"><a class="viewcode-back" href="../docs/main.html#main.check_nick">[docs]</a><span class="nd">@bot</span><span class="o">.</span><span class="n">message_handler</span><span class="p">(</span><span class="n">content_types</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">check_nick</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Check existing of user</span>
+
+<span class="sd">    :param message: message from user</span>
+<span class="sd">    :return: goes to the game when nick is correct</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">base</span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+    <span class="n">entered_nick</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">text</span>
+    <span class="n">founded_id</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">existion</span><span class="p">(</span><span class="n">entered_nick</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">founded_id</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">temp</span><span class="o">.</span><span class="n">set_user_id</span><span class="p">(</span><span class="n">entered_nick</span><span class="p">)</span>
+        <span class="n">base</span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span>
+        <span class="n">question</span> <span class="o">=</span> <span class="s2">&quot;И снова здравствуйте,во что играем?&quot;</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">reply_markup</span><span class="o">=</span><span class="n">keyboard_select_quiz</span><span class="p">)</span>
+
+        <span class="n">bot</span><span class="o">.</span><span class="n">register_next_step_handler</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">first_game</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">question</span> <span class="o">=</span> <span class="s2">&quot;Ты точно существуешь?&quot;</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">reply_markup</span><span class="o">=</span><span class="n">keyboard_yesno</span><span class="p">)</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">register_next_step_handler</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">yesno_help_function</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_nick"><a class="viewcode-back" href="../docs/main.html#main.get_nick">[docs]</a><span class="nd">@bot</span><span class="o">.</span><span class="n">message_handler</span><span class="p">(</span><span class="n">content_types</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">get_nick</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get nick from user and creates user</span>
+
+<span class="sd">    :param message: message from user</span>
+<span class="sd">    :return: goes to stage of getting age</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">base</span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+    <span class="n">temp</span><span class="o">.</span><span class="n">push_new_user</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">base</span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span>
+
+    <span class="n">bot</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s1">&#39;Введи возраст&#39;</span><span class="p">,</span> <span class="n">reply_markup</span><span class="o">=</span><span class="n">keyboard_delete</span><span class="p">)</span>
+    <span class="n">bot</span><span class="o">.</span><span class="n">register_next_step_handler</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">get_age</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="generations_answer"><a class="viewcode-back" href="../docs/main.html#main.generations_answer">[docs]</a><span class="k">def</span> <span class="nf">generations_answer</span><span class="p">(</span><span class="n">mess</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates easter agg depends on the age of user</span>
+
+<span class="sd">    :param mess: message from user</span>
+<span class="sd">    :param t: user generation</span>
+<span class="sd">    :return: generated string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">bot</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">mess</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                             <span class="s2">&quot;Категорически приветствую, &quot;</span> <span class="o">+</span> <span class="n">t</span> <span class="o">+</span> <span class="s2">&quot;, а теперь выбирай игру:&quot;</span><span class="p">,</span>
+                             <span class="n">reply_markup</span><span class="o">=</span><span class="n">keyboard_select_quiz</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="get_age"><a class="viewcode-back" href="../docs/main.html#main.get_age">[docs]</a><span class="nd">@bot</span><span class="o">.</span><span class="n">message_handler</span><span class="p">(</span><span class="n">content_types</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">get_age</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get age of user needed in joke purpose</span>
+
+<span class="sd">    :param message: message from user</span>
+<span class="sd">    :return: starts game</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">base</span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">age</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s1">&#39;Возраст - это число&#39;</span><span class="p">,</span> <span class="n">reply_markup</span><span class="o">=</span><span class="n">keyboard_delete</span><span class="p">)</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">register_next_step_handler</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">get_age</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="n">age</span> <span class="o">&lt;</span> <span class="mi">18</span><span class="p">:</span>
+        <span class="n">generations_answer</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s2">&quot;Школьник&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">age</span> <span class="o">&gt;</span> <span class="mi">40</span><span class="p">:</span>
+        <span class="n">generations_answer</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s2">&quot;Динозавр&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">generations_answer</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">temp</span><span class="o">.</span><span class="n">get_user_name</span><span class="p">())</span>
+
+    <span class="n">base</span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span>
+    <span class="n">bot</span><span class="o">.</span><span class="n">register_next_step_handler</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">first_game</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="first_game"><a class="viewcode-back" href="../docs/main.html#main.first_game">[docs]</a><span class="nd">@bot</span><span class="o">.</span><span class="n">message_handler</span><span class="p">(</span><span class="n">content_types</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">first_game</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates film for this user at first time</span>
+
+<span class="sd">    :param message: message from user</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">base</span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;Фильмы&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">temp</span><span class="o">.</span><span class="n">get_unused_film</span><span class="p">()</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;Что-то пошло не так!&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">bot</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">film_intro</span><span class="p">,</span>
+                         <span class="n">reply_markup</span><span class="o">=</span><span class="n">keyboard_ok</span><span class="p">)</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">register_next_step_handler</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">one_round_film_game</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;Ты как это сделал?&quot;</span><span class="p">)</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">register_next_step_handler</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">first_game</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="not_first_film_game"><a class="viewcode-back" href="../docs/main.html#main.not_first_film_game">[docs]</a><span class="nd">@bot</span><span class="o">.</span><span class="n">message_handler</span><span class="p">(</span><span class="n">content_types</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">not_first_film_game</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates film for this user not at first time</span>
+
+<span class="sd">    :param message: message from user</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">base</span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;Да&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">temp</span><span class="o">.</span><span class="n">get_unused_film</span><span class="p">()</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;Ты прошел игру!&quot;</span><span class="p">)</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">register_next_step_handler</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">start</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">bot</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;Поехали, помни, что некоторые подсказки нужно подождать&quot;</span><span class="p">,</span>
+                         <span class="n">reply_markup</span><span class="o">=</span><span class="n">keyboard_ok</span><span class="p">)</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">register_next_step_handler</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">one_round_film_game</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;Пока&quot;</span><span class="p">)</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">stop_polling</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="one_round_film_game"><a class="viewcode-back" href="../docs/main.html#main.one_round_film_game">[docs]</a><span class="nd">@bot</span><span class="o">.</span><span class="n">message_handler</span><span class="p">(</span><span class="n">content_types</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">one_round_film_game</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if user answer is right</span>
+<span class="sd">    After that asks user about film and gets answer</span>
+
+<span class="sd">    :param message: message from user</span>
+<span class="sd">    :return: goes to the next round, next game or stop session</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">base</span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">temp</span><span class="o">.</span><span class="n">answer_is_right</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> <span class="o">==</span> <span class="n">config</span><span class="o">.</span><span class="n">please_stop</span><span class="p">:</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">please_stop</span><span class="p">,</span> <span class="n">reply_markup</span><span class="o">=</span><span class="n">keyboard_delete</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="n">temp</span><span class="o">.</span><span class="n">answer_is_right</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">text</span><span class="p">):</span>
+        <span class="n">temp</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="n">base</span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span>
+
+        <span class="n">question</span> <span class="o">=</span> <span class="s2">&quot;Правильно! Продолжаем?&quot;</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">reply_markup</span><span class="o">=</span><span class="n">keyboard_yesno</span><span class="p">)</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">register_next_step_handler</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">not_first_film_game</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">temp</span><span class="o">.</span><span class="n">full_questions</span><span class="p">():</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;Мимо&quot;</span><span class="p">,</span> <span class="n">reply_markup</span><span class="o">=</span><span class="n">keyboard_delete</span><span class="p">)</span>
+
+        <span class="n">temp</span><span class="o">.</span><span class="n">change_que_number</span><span class="p">()</span>
+        <span class="n">base</span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span>
+        <span class="k">if</span> <span class="n">temp</span><span class="o">.</span><span class="n">still_in_game</span><span class="p">():</span>
+            <span class="n">question</span> <span class="o">=</span> <span class="s2">&quot;Ты проиграл( </span><span class="se">\n</span><span class="s2"> Ответ:  &quot;</span> <span class="o">+</span> <span class="n">temp</span><span class="o">.</span><span class="n">final_answer</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Начать снова?&quot;</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">reply_markup</span><span class="o">=</span><span class="n">keyboard_yesno</span><span class="p">)</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">register_next_step_handler</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">not_first_film_game</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">question</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">new_task</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">question</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">if_foto</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">question</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">send_photo</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">bot</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">question</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">bot</span><span class="o">.</span><span class="n">register_next_step_handler</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">one_round_film_game</span><span class="p">)</span></div>
+
+
+<span class="n">bot</span><span class="o">.</span><span class="n">polling</span><span class="p">(</span><span class="n">none_stop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">PostModernQuizBot</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../docs/main.html">main module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../docs/UserBase.html">UserBase module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../docs/FilmsList.html">FilmsList module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../docs/Keyboards.html">Keyboards module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../docs/UserInformation.html">UserInformation module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../docs/Texts.html">Texts module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../docs/config.html">config module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Akulov.A, Lebedev.E.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
