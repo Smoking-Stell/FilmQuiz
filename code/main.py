@@ -1,5 +1,4 @@
 import telebot
-import config
 
 from Keyboards import keyboard_yesno, keyboard_delete, keyboard_select_quiz, keyboard_ok
 from UserInformation import *
@@ -8,7 +7,6 @@ from Texts import *
 bot = telebot.TeleBot(config.token)
 
 base = {}
-
 
 @bot.message_handler(content_types=['text'])
 def start(message):

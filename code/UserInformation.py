@@ -1,5 +1,3 @@
-import config
-
 from FilmsList import *
 import UserBase
 
