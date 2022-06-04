@@ -1,3 +1,13 @@
+"""Keyboards for main programm
+
+contains:
+    keyboard with Да/Нет
+    keyboard with quiz types
+    keyboard with Ok
+    keyboard that removes other keyboards
+
+"""
+
 from telebot.types import ReplyKeyboardRemove, \
     ReplyKeyboardMarkup, KeyboardButton, \
     InlineKeyboardMarkup, InlineKeyboardButton

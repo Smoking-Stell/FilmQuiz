@@ -1,3 +1,10 @@
+"""
+Contains general information:
+    tokens and url
+    list of films
+    identifications
+"""
+
 token = '5160953743:AAEiEMtJR-59wS7PuTD8N_AslzCsH452Veg'
 
 # api_token = "09de81f6-5e66-4883-be7c-be9b689bec90"

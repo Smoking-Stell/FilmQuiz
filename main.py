@@ -3,7 +3,6 @@ import config
 
 from Keyboards import keyboard_yesno, keyboard_delete, keyboard_select_quiz, keyboard_ok
 from UserInformation import *
-from FilmsList import *
 from Texts import *
 
 bot = telebot.TeleBot(config.token)
@@ -13,6 +12,15 @@ base = {}
 
 @bot.message_handler(content_types=['text'])
 def start(message):
+
+    """
+    Main function that targets to other and start creating of user
+
+
+    :param message: message from user
+    :return: goes to other functions of bot, may show table of results
+    """
+
     global base
     base[message.from_user.id] = Base()
     temp = base[message.from_user.id]
@@ -35,6 +43,14 @@ def start(message):
 
 @bot.message_handler(content_types=['text'])
 def yesno_help_function(message):
+
+    """
+    Asks user if he really exists
+
+    :param message: message from user (Да или нет)
+    :return: goes to another bot function if nick exists or no
+    """
+
     if message.text == 'Да':
         bot.send_message(message.from_user.id, "Тогда перепроверь и введи снова")
         bot.register_next_step_handler(message, check_nick)
@@ -45,6 +61,13 @@ def yesno_help_function(message):
 
 @bot.message_handler(content_types=['text'])
 def check_nick(message):
+
+    """Check existing of user
+
+    :param message: message from user
+    :return: goes to the game when nick is correct
+    """
+
     temp = base[message.from_user.id]
     entered_nick = message.text
     founded_id = temp.existion(entered_nick)
@@ -54,7 +77,7 @@ def check_nick(message):
         question = "И снова здравствуйте,во что играем?"
         bot.send_message(message.from_user.id, question, reply_markup=keyboard_select_quiz)
 
-        bot.register_next_step_handler(message, first_film_game)
+        bot.register_next_step_handler(message, first_game)
     else:
         question = "Ты точно существуешь?"
         bot.send_message(message.from_user.id, question, reply_markup=keyboard_yesno)
@@ -63,6 +86,14 @@ def check_nick(message):
 
 @bot.message_handler(content_types=['text'])
 def get_nick(message):
+
+    """
+    Get nick from user and creates user
+
+    :param message: message from user
+    :return: goes to stage of getting age
+    """
+
     temp = base[message.from_user.id]
     temp.push_new_user(message.text)
     base[message.from_user.id] = temp
@@ -72,6 +103,14 @@ def get_nick(message):
 
 
 def generations_answer(mess, t):
+    """
+    Generates easter agg depends on the age of user
+
+    :param mess: message from user
+    :param t: user generation
+    :return: generated string
+    """
+
     return (bot.send_message(mess.from_user.id,
                              "Категорически приветствую, " + t + ", а теперь выбирай игру:",
                              reply_markup=keyboard_select_quiz))
@@ -79,6 +118,14 @@ def generations_answer(mess, t):
 
 @bot.message_handler(content_types=['text'])
 def get_age(message):
+
+    """
+    Get age of user needed in joke purpose
+
+    :param message: message from user
+    :return: starts game
+    """
+
     temp = base[message.from_user.id]
     try:
         age = int(message.text)
@@ -95,11 +142,19 @@ def get_age(message):
         generations_answer(message, temp.get_user_name())
 
     base[message.from_user.id] = temp
-    bot.register_next_step_handler(message, first_film_game)
+    bot.register_next_step_handler(message, first_game)
 
 
 @bot.message_handler(content_types=['text'])
-def first_film_game(message):
+def first_game(message):
+
+    """
+    Generates film for this user at first time
+
+    :param message: message from user
+    :return:
+    """
+
     temp = base[message.from_user.id]
     if message.text == "Фильмы":
         if temp.get_unused_film() == -1:
@@ -111,11 +166,19 @@ def first_film_game(message):
         bot.register_next_step_handler(message, one_round_film_game)
     else:
         bot.send_message(message.from_user.id, "Ты как это сделал?")
-        bot.register_next_step_handler(message, first_film_game)
+        bot.register_next_step_handler(message, first_game)
 
 
 @bot.message_handler(content_types=['text'])
 def not_first_film_game(message):
+
+    """
+    Generates film for this user not at first time
+
+    :param message: message from user
+    :return:
+    """
+
     temp = base[message.from_user.id]
     if message.text == "Да":
         if temp.get_unused_film() == -1:
@@ -132,6 +195,15 @@ def not_first_film_game(message):
 
 @bot.message_handler(content_types=['text'])
 def one_round_film_game(message):
+
+    """
+    Checks if user answer is right
+    After that asks user about film and gets answer
+
+    :param message: message from user
+    :return: goes to the next round, next game or stop session
+    """
+
     temp = base[message.from_user.id]
     if temp.answer_is_right(message.text) == config.please_stop:
         bot.send_message(message.from_user.id, temp.answer_is_right(message.text), reply_markup=keyboard_delete)

@@ -57,6 +57,10 @@ class Base:
         return 1
 
     def answer_is_right(self, user_answer):
+
+        if self.temp_film == 0:
+            return config.please_stop
+
         real_answer = self.temp_film.get_right_answer().lower().replace(' ', '')
         user_answer = user_answer.lower().replace(' ', '')
         
@@ -64,11 +68,13 @@ class Base:
             return True
         count = 0
         i = 0
-        while i < len(real_answer) and user_answer[i] == real_answer[i]:
+        while i < len(user_answer) and i < len(real_answer) and\
+                user_answer[i] == real_answer[i]:
             i += 1
             count += 1
         i = -1
-        while i >= -len(real_answer) and user_answer[i] == real_answer[i]:
+        while i >= -len(user_answer) and i >= -len(real_answer) \
+                and user_answer[i] == real_answer[i]:
             i -= 1
             count += 1
         return abs(len(real_answer) - count) <= 1

@@ -5,10 +5,12 @@ from skimage.transform import resize
 from skimage.io import imread, imsave
 from skimage import img_as_float, img_as_ubyte
 
+import config
 from config import url, api_token, if_foto, in_img_case, if_string
 
 
 def write_img(img, img_name):
+
     """
     It's a function for save image with name (image_name).
 
@@ -24,6 +26,7 @@ def write_img(img, img_name):
 
 
 def smart_text(str1, str2):
+
     """
     It's a function for replace keywords from name of film to *(n).
 
@@ -31,6 +34,7 @@ def smart_text(str1, str2):
     :param str2: string with keywords (str).
     :return: new string with *(n) (str).
     """
+
     for i in str2.split():
         if len(i) >= 3:
             str1 = str1.replace(i, '*')
@@ -38,21 +42,25 @@ def smart_text(str1, str2):
 
 
 def bed_poster(img, out_img_name):
+
     """
-    This's a function that makes the original plot very poor quality.
+    This's a function that makes the original plot poor quality.
+    Saves image in file
 
     :param img: image poster.
-    :param out_img_name: name for bad poster (str).
+    :param out_img_name: place for bad image (str).
     :return: None.
     """
 
     def randpix(n):
+
         """
         It return random color pixel. 50% for save original color. For 1 canal.
 
         :param n: color (int).
         :return: color (int).
         """
+
         r = random.randint(1, 4)
         if r == 4:
             n = 255
@@ -61,13 +69,15 @@ def bed_poster(img, out_img_name):
         return n
 
     def Summer(ex, n):
+
         """
         It's for blur image by mask with length n.
 
         :param ex: image.
         :param n: length for mask (int).
-        :return: blur image.
+        :return: blured image.
         """
+
         temp = np.zeros((ex.shape[0], ex.shape[1]))
         temp[0][0] = ex[0][0]
         for j in range(1, ex.shape[1]):
@@ -103,13 +113,15 @@ def bed_poster(img, out_img_name):
     r = im[:, :, 0].copy()
     g = im[:, :, 1].copy()
     b = im[:, :, 2].copy()
-    r = Summer(r, 51)
-    g = Summer(g, 51)
-    b = Summer(b, 51)
+    blur_value = 17
+    r = Summer(r, blur_value)
+    g = Summer(g, blur_value)
+    b = Summer(b, blur_value)
     imsave(out_img_name, np.dstack((r, g, b)))
 
 
 def general(inf, field="id", segment="movie"):
+
     """
     It's for request on Kinopoisk.
 
@@ -136,6 +148,7 @@ def general(inf, field="id", segment="movie"):
 # args: [film_id, img_name]
 
 def slogan(*args):
+
     """
     It's for find slogan of film.
 
@@ -148,6 +161,7 @@ def slogan(*args):
 
 
 def descript(*args):
+
     """
     It's for find description of film.
 
@@ -159,42 +173,34 @@ def descript(*args):
     return if_string, smart_text(cont["description"], cont["name"])
 
 
-def one_screen(*args):
+def stars(*args):
+
     """
-    It's for find random frame of film.
+    It changes words or half of the word to stars.
 
-    :param args: film id (str) and name for image
-    :return: image identification and random frame of film (image) and name of
-    or None if we haven't any images for movie.
+    :param args: id (int).
+    :return: string identification and film name with some parts replaced (str).
     """
 
-    cont = general(args[0], in_img_case, "image")
-    date = cont['docs']
-    ans = []
-    for i in date:
-        if 'kp' in i['url'] or 'yandex' in i['url']:
-            ans.append(i['url'])
+    cont = general(args[0])
+    s = cont['name']
 
-    if not ans:
-        return None
-
-    t = random.randint(0, len(ans) - 1)
-    img = requests.get(ans[t])
-    im = write_img(img.content, args[1])
-
-    while (ans[t] == -1) or all([i[0] == 238 and i[1] == 238 and i[2] == 238
-                                 for i in (im[0][0], im[0][-1], im[-1][0], im[-1][-1])]):
-        ans[t] = -1
-        t = random.randint(0, len(ans) - 1)
-        img = requests.get(ans[t])
-        im = write_img(img.content, args[1])
-
-    return if_foto, args[1]
+    if ' ' not in s:
+        s_new = s[:len(s) // 2] + '*' * (len(s) - (len(s) // 2))
+    else:
+        s_time = s.split()
+        for i in range(len(s_time)):
+            if i % 2 == 0:
+                s_time[i] = '*' * len(s_time[i])
+        s_new = ' '.join(s_time)
+    return if_string, s_new
 
 
 def fact(*args):
+
     """
-    This function return random fact about film.
+    Get random fact about film and
+    cleans fact from links and other unuseful trash.
 
     :param args: id (int).
     :return: random fact about film like 'smart_text' (str).
@@ -213,12 +219,31 @@ def fact(*args):
     return if_string, smart_text(s, cont["name"])
 
 
+def intro(*args):
+
+    """
+    Get some information about film and
+
+    :param args: id (int).
+    :return: string identification and information about film(str)
+    """
+
+    cont = general(args[0])
+    try:
+        ans = f"Жанр: {cont['genres'][0]['name']} \nРежиссер (или руководитель): {cont['persons'][0]['name']} \n" \
+               f"Премьера: {cont['premiere']['world'][:4]} год."
+    except Exception:
+        ans = None
+    return if_string, ans
+
+
 def poster(*args):
+
     """
     It's for find poster.
 
     :param args: id (int).
-    :return: image.
+    :return: image identification and film poser in bad condition.
     """
 
     cont = general(args[0])
@@ -229,44 +254,69 @@ def poster(*args):
     return if_foto, img_name
 
 
-def stars(*args):
+def one_screen(*args):
+
     """
-    It changes words or half of the word to stars.
+    It's for find random frame of film.
+    Checks if frame exists (because some frames replaced with special image)
 
-    :param args: id (int).
-    :return: name with stars (str).
+    :param args: film id (str) and name for image
+    :return: image identification and random frame of film (image)
+    or None if we haven't any images for movie.
     """
 
-    cont = general(args[0])
-    s = cont['name']
+    cont = general(args[0], in_img_case, "image")
+    date = cont['docs']
+    ans = []
+    for i in date:
+        if 'kp' in i['url'] or 'yandex' in i['url']:
+            ans.append(i['url'])
 
-    if ' ' not in s:
-        s_new = s[:len(s) // 2] + '*' * (len(s) - (len(s) // 2))
-    else:
-        s_time = s.split()
-        for i in range(len(s_time)):
-            if i % 2 == 0:
-                s_time[i] = '*' * len(s_time[i])
-        s_new = ' '.join(s_time)
-    return if_string, s_new
+    if not ans:
+        return if_foto, None
+
+    t = random.randint(0, len(ans) - 1)
+    img = requests.get(ans[t])
+    im = write_img(img.content, args[1])
+
+    while (ans[t] == -1) or all([i[0] == 238 and i[1] == 238 and i[2] == 238
+                                 for i in (im[0][0], im[0][-1], im[-1][0], im[-1][-1])]):
+        ans[t] = -1
+        t = random.randint(0, len(ans) - 1)
+        img = requests.get(ans[t])
+        im = write_img(img.content, args[1])
+
+    return if_foto, args[1]
 
 
 class Film:
 
     def __init__(self, film_id, film_user_name):
+
         """
         Constructor.
+        used: shows was this function used or not
+        functions: list of tasks
+        right_answer: shows right name of film on russian
 
         :param film_id: id of kinopoisk (int).
-        :param film_user_name: user name (str).
+        :param film_user_name: some unique information for user, who used this film (str).
         """
-        self.used = np.zeros((40))
-        self.functions = [slogan, descript, one_screen, fact, poster, stars]
+
+        self.functions = [slogan, descript, one_screen, fact, poster, stars, intro]
+        self.used = np.zeros((len(self.functions) + 2))
         self.film_id = film_id
         self.film_user_name = film_user_name
         self.right_answer = general(film_id)["name"]
 
     def task(self):
+
+        """
+        Function gives random task about film and identification for it
+
+        :return: identification, information
+        """
+
         m = len(self.functions) - 1
         num = random.randint(0, m)
         while self.used[num] == 1:
@@ -280,9 +330,11 @@ class Film:
         return ans
 
     def get_right_answer(self):
-        """
-        Get right ans.
 
-        :return: right answer.
         """
+        Get right name of film.
+
+        :return: right answer. (str)
+        """
+
         return self.right_answer
